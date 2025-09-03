@@ -6,6 +6,7 @@ from handlers import handler_factory
 SUPPORTED_EVENTS = [
     'PushEvent',
     'IssuesEvent',
+    'WatchEvent',
 ]
 
 def main() -> None:
