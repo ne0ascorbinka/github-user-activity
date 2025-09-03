@@ -86,12 +86,28 @@ class CreateEventHandler(Handler):
         return f'Created a {self.ref_type} in {self.repo}'
 
 
+class DeleteEventHandler(Handler):
+    def __init__(self, repo: str, ref_type: str) -> None:
+        super().__init__(repo)
+        self.ref_type = ref_type
+    
+    @classmethod
+    def from_event_dict(cls, event: dict) -> None:
+        repo = event['repo']['name']
+        ref_type = event['payload']['ref_type']
+        return cls(repo, ref_type)
+    
+    def handle(self) -> str:
+        return f'Deleted a {self.ref_type} from {self.repo}'
+
+
 HANDLERS_MAP = {
     'PushEvent': PushEventHandler,
     'IssuesEvent': IssuesEventHandler,
     'WatchEvent': WatchEventHandler,
     'CommitCommentEvent': CommitCommentEventHandler,
     'CreateEvent': CreateEventHandler,
+    'DeleteEvent': DeleteEventHandler,
 }
 
 

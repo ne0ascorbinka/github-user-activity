@@ -9,6 +9,7 @@ SUPPORTED_EVENTS = [
     'WatchEvent',
     'CommitCommentEvent',
     'CreateEvent',
+    'DeleteEvent',
 ]
 
 def main() -> None:
