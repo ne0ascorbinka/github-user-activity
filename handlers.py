@@ -3,6 +3,9 @@ from language import plural
 
 
 class Handler(metaclass=ABCMeta):
+    def __init__(self, repo: str) -> None:
+        self.repo = repo
+
     @abstractmethod
     def from_event_dict(self, event: dict) -> None:
         pass
@@ -14,7 +17,7 @@ class Handler(metaclass=ABCMeta):
 
 class PushEventHandler(Handler):
     def __init__(self, repo: str, size: int) -> None:
-        self.repo = repo
+        super().__init__(repo)
         self.size = size
     
     @classmethod
@@ -26,6 +29,9 @@ class PushEventHandler(Handler):
     
     def handle(self) -> str:
         return f'Pushed {self.size} {plural('commit', self.size)} to {self.repo}'
+
+
+
 
 
 HANDLERS_MAP = {
