@@ -5,7 +5,7 @@ from handlers import handler_factory
 
 SUPPORTED_EVENTS = [
     'PushEvent',
-    
+    'IssuesEvent',
 ]
 
 def main() -> None:

@@ -31,11 +31,27 @@ class PushEventHandler(Handler):
         return f'Pushed {self.size} {plural('commit', self.size)} to {self.repo}'
 
 
-
+class IssuesEventHandler(Handler):
+    def __init__(self, repo: str, action: str) -> None:
+        super().__init__(repo)
+        self.action = action
+    
+    @classmethod
+    def from_event_dict(cls, event: dict) -> None:
+        repo = event['repo']['name']
+        action = event['payload']['action']
+        return cls(repo, action)
+    
+    def handle(self) -> str:
+        if self.action == 'opened':
+            return f'Opened a new issue in {self.repo}'
+        
+        return f'{self.action.capitalize()} an issue in {self.repo}'
 
 
 HANDLERS_MAP = {
     'PushEvent': PushEventHandler,
+    'IssuesEvent': IssuesEventHandler,
 }
 
 
