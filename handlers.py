@@ -1,13 +1,15 @@
+from __future__ import annotations
 from abc import ABCMeta, abstractmethod
 from language import plural
 
 
 class Handler(metaclass=ABCMeta):
-    def __init__(self, repo: str) -> None:
+    def __init__(self, repo: str) -> Handler:
         self.repo = repo
 
+    @classmethod
     @abstractmethod
-    def from_event_dict(self, event: dict) -> None:
+    def from_event_dict(self, event: dict) -> Handler:
         pass
 
     @abstractmethod
@@ -16,12 +18,12 @@ class Handler(metaclass=ABCMeta):
 
 
 class PushEventHandler(Handler):
-    def __init__(self, repo: str, size: int) -> None:
+    def __init__(self, repo: str, size: int) -> PushEventHandler:
         super().__init__(repo)
         self.size = size
     
     @classmethod
-    def from_event_dict(cls, event: dict) -> None:
+    def from_event_dict(cls, event: dict) -> PushEventHandler:
         repo = event['repo']['name']
         size = event['payload']['size']
         return cls(repo, size)
@@ -32,12 +34,12 @@ class PushEventHandler(Handler):
 
 
 class IssuesEventHandler(Handler):
-    def __init__(self, repo: str, action: str) -> None:
+    def __init__(self, repo: str, action: str) -> IssuesEventHandler:
         super().__init__(repo)
         self.action = action
     
     @classmethod
-    def from_event_dict(cls, event: dict) -> None:
+    def from_event_dict(cls, event: dict) -> IssuesEventHandler:
         repo = event['repo']['name']
         action = event['payload']['action']
         return cls(repo, action)
@@ -51,7 +53,7 @@ class IssuesEventHandler(Handler):
 
 class WatchEventHandler(Handler):
     @classmethod
-    def from_event_dict(cls, event: dict) -> None:
+    def from_event_dict(cls, event: dict) -> WatchEventHandler:
         repo = event['repo']['name']
         return cls(repo)
     
@@ -61,7 +63,7 @@ class WatchEventHandler(Handler):
 
 class CommitCommentEventHandler(Handler):
     @classmethod
-    def from_event_dict(cls, event: dict) -> None:
+    def from_event_dict(cls, event: dict) -> CommitCommentEventHandler:
         repo = event['repo']['name']
         return cls(repo)
     
@@ -70,12 +72,12 @@ class CommitCommentEventHandler(Handler):
 
 
 class CreateEventHandler(Handler):
-    def __init__(self, repo: str, ref_type: str) -> None:
+    def __init__(self, repo: str, ref_type: str) -> CreateEventHandler:
         super().__init__(repo)
         self.ref_type = ref_type
     
     @classmethod
-    def from_event_dict(cls, event: dict) -> None:
+    def from_event_dict(cls, event: dict) -> CreateEventHandler:
         repo = event['repo']['name']
         ref_type = event['payload']['ref_type']
         return cls(repo, ref_type)
@@ -87,12 +89,12 @@ class CreateEventHandler(Handler):
 
 
 class DeleteEventHandler(Handler):
-    def __init__(self, repo: str, ref_type: str) -> None:
+    def __init__(self, repo: str, ref_type: str) -> DeleteEventHandler:
         super().__init__(repo)
         self.ref_type = ref_type
     
     @classmethod
-    def from_event_dict(cls, event: dict) -> None:
+    def from_event_dict(cls, event: dict) -> DeleteEventHandler:
         repo = event['repo']['name']
         ref_type = event['payload']['ref_type']
         return cls(repo, ref_type)
