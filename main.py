@@ -7,6 +7,7 @@ SUPPORTED_EVENTS = [
     'PushEvent',
     'IssuesEvent',
     'WatchEvent',
+    'CommitCommentEvent',
 ]
 
 def main() -> None:

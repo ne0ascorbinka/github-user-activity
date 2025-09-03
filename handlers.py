@@ -59,10 +59,21 @@ class WatchEventHandler(Handler):
         return f'Starred {self.repo}'
 
 
+class CommitCommentEventHandler(Handler):
+    @classmethod
+    def from_event_dict(cls, event: dict) -> None:
+        repo = event['repo']['name']
+        return cls(repo)
+    
+    def handle(self) -> str:
+        return f'Commented on a commit in {self.repo}'
+
+
 HANDLERS_MAP = {
     'PushEvent': PushEventHandler,
     'IssuesEvent': IssuesEventHandler,
     'WatchEvent': WatchEventHandler,
+    'CommitCommentEvent': CommitCommentEventHandler,
 }
 
 
