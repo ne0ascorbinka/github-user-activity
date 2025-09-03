@@ -69,11 +69,29 @@ class CommitCommentEventHandler(Handler):
         return f'Commented on a commit in {self.repo}'
 
 
+class CreateEventHandler(Handler):
+    def __init__(self, repo: str, ref_type: str) -> None:
+        super().__init__(repo)
+        self.ref_type = ref_type
+    
+    @classmethod
+    def from_event_dict(cls, event: dict) -> None:
+        repo = event['repo']['name']
+        ref_type = event['payload']['ref_type']
+        return cls(repo, ref_type)
+    
+    def handle(self) -> str:
+        if self.ref_type == 'repository':
+            return f'Created repository {self.repo}'
+        return f'Created a {self.ref_type} in {self.repo}'
+
+
 HANDLERS_MAP = {
     'PushEvent': PushEventHandler,
     'IssuesEvent': IssuesEventHandler,
     'WatchEvent': WatchEventHandler,
     'CommitCommentEvent': CommitCommentEventHandler,
+    'CreateEvent': CreateEventHandler,
 }
 
 
